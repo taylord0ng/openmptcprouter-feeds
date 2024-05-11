@@ -88,11 +88,14 @@ jobs:
         OMR_KERNEL: ${{ matrix.OMR_KERNEL }}
       run: |
         make IGNORE_ERRORS=m -C $OMR_TARGET/$OMR_KERNEL/source target/install -j$(nproc) || make IGNORE_ERRORS=m -C $OMR_TARGET/$OMR_KERNEL/source target/install -j1 V=s
+        ls -l x86_64/6.1/source/bin/targets/x86/64/openmptcprouter*
+        mkdir -p x86_64/6.1/source/bin/targets/upload
+        cp -rvf x86_64/6.1/source/bin/targets/x86/64/openmptcprouter*x86-64-generic-ext4-combined.img.gz x86_64/6.1/source/bin/targets/upload
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.OMR_TARGET }}
-        path: /home/runner/work/omr/${{ matrix.OMR_TARGET }}/${{ matrix.OMR_KERNEL }}/source/bin/${{ matrix.OMR_TARGET }}/targets
+        path: /home/runner/work/omr/${{ matrix.OMR_TARGET }}/${{ matrix.OMR_KERNEL }}/source/bin/targets/upload
         overwrite: true
     # - if: steps.branch_name.outputs.SOURCE_BRANCH == ''
     #   name: Deploy - Create directory
